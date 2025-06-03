@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Category - PraiseHim</title>
+  <title>About - PraiseHim</title>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -73,17 +73,20 @@
     </button>
   </header>
 
-  <main class="flex-grow max-w-7xl mx-auto p-6 w-full">
-    <h2 class="text-4xl font-extrabold text-center text-indigo-700 dark:text-indigo-300 mb-6">{{ category.category }}</h2>
-    <ul class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {% for song in category.songs %}
-      <li class="bg-white dark:bg-slate-900 rounded-lg shadow p-4 border border-slate-200 dark:border-slate-700">
-        <a href="/song/{{ song.title | lower | replace(' ', '-') | replace('?', '') | replace(',', '') | replace("'", '') }}" class="block text-indigo-700 dark:text-indigo-300 hover:underline text-lg font-semibold mb-2">
-          {{ song.title }}
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
+  <main class="flex-grow max-w-4xl mx-auto p-6 w-full text-center mt-16">
+    <h2 class="text-4xl font-extrabold text-indigo-700 dark:text-indigo-300 mb-6">About PraiseHim</h2>
+    <p class="text-lg text-slate-600 dark:text-slate-300 mb-4">
+      PraiseHim is dedicated to providing an organized, easy-to-use platform for worship leaders, singers, and believers. Whether you’re preparing for a service or deepening your personal worship, we help you connect through song.
+    </p>
+    <p class="text-slate-600 dark:text-slate-300 mb-8">
+      We provide access to curated praise songs from hymnals and collections, but we do not own the rights to the lyrics. All rights belong to their respective copyright holders. Our mission is non-commercial and focused solely on worship enrichment.
+    </p>
+
+    <h2 class="text-3xl font-extrabold text-indigo-700 dark:text-indigo-300 mb-4">Our Mission</h2>
+    <p class="max-w-2xl mx-auto text-slate-600 dark:text-slate-300 mb-8">
+      We exist to uplift, inspire, and connect believers worldwide through song. Our goal is to make worship accessible, joyful, and deeply meaningful — wherever you are on your faith journey.
+    </p>
+
   </main>
 
   <footer class="text-center text-slate-500 dark:text-slate-400 text-sm p-4 border-t border-slate-200 dark:border-slate-700">

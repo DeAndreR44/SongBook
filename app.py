@@ -3,25 +3,24 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import json
-import os
 
 app = FastAPI()
 
-# Mount the static directory
+# Mount the static directory (for CSS, images, etc.)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Jinja2 templates
+# Setup Jinja2 templates directory
 templates = Jinja2Templates(directory="templates")
 
 # Load all songs from songs.json
 with open("songs.json", "r", encoding="utf-8") as f:
     songs_data = json.load(f)
 
-# Slugify helper function
+# Helper: slugify
 def slugify(text: str) -> str:
     return text.lower().replace(" ", "-").replace("/", "-").replace("?", "").replace(",", "").replace("'", "")
 
-# Homepage with category list and optional search
+# Homepage with search
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, q: str = ""):
     if q:
@@ -68,3 +67,8 @@ async def category_page(request: Request, category: str):
             })
 
     return templates.TemplateResponse("404.html", {"request": request}, status_code=404)
+
+# About page route
+@app.get("/about", response_class=HTMLResponse)
+async def read_about(request: Request):
+    return templates.TemplateResponse("about.html", {"request": request})
