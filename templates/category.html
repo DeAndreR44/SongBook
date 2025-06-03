@@ -5,9 +5,7 @@
   <title>Category - PraiseHim</title>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = { darkMode: 'class' };
-  </script>
+  <script> tailwind.config = { darkMode: 'class' }; </script>
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
@@ -35,6 +33,12 @@
     .dark body::before {
       background: rgba(0, 0, 0, 0.7);
     }
+    body.light-mode input,
+    body.light-mode textarea,
+    body.light-mode select {
+      background-color: white !important;
+      color: black !important;
+    }
   </style>
   <script>
     function setMode() {
@@ -42,10 +46,12 @@
         document.documentElement.classList.add('dark');
         document.body.classList.remove('light-mode');
         document.body.classList.add('dark-mode');
+        document.getElementById('darkModeButton').innerText = '☀ Light Mode';
       } else {
         document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark-mode');
         document.body.classList.add('light-mode');
+        document.getElementById('darkModeButton').innerText = '🌙 Dark Mode';
       }
     }
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -67,8 +73,9 @@
     <nav class="space-x-4">
       <a href="/" class="hover:underline">Home</a>
       <a href="/about" class="hover:underline">About</a>
+      <a href="/warmups" class="hover:underline">Warmups</a>
     </nav>
-    <button onclick="toggleDarkMode()" class="ml-4 px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white">
+    <button id="darkModeButton" onclick="toggleDarkMode()" class="ml-4 px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white">
       🌙 Dark Mode
     </button>
   </header>

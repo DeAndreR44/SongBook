@@ -6,7 +6,7 @@ import json
 
 app = FastAPI()
 
-# Mount the static directory (for CSS, images, etc.)
+# Mount static directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Setup Jinja2 templates directory
@@ -16,17 +16,22 @@ templates = Jinja2Templates(directory="templates")
 with open("songs.json", "r", encoding="utf-8") as f:
     songs_data = json.load(f)
 
-# Helper: slugify
+# Helper: slugify (for URLs)
 def slugify(text: str) -> str:
     return text.lower().replace(" ", "-").replace("/", "-").replace("?", "").replace(",", "").replace("'", "")
+
+# Helper: normalize (for lenient search matching)
+def normalize(text: str) -> str:
+    return text.lower().replace("'", "").replace("’", "").replace("‘", "").replace(" ", "")
 
 # Homepage with search
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, q: str = ""):
     if q:
+        q_normalized = normalize(q)
         filtered_categories = []
         for cat in songs_data:
-            matched_songs = [s for s in cat["songs"] if q.lower() in s["title"].lower()]
+            matched_songs = [s for s in cat["songs"] if q_normalized in normalize(s["title"])]
             if matched_songs:
                 filtered_categories.append({
                     "category": cat["category"],
@@ -35,13 +40,15 @@ async def home(request: Request, q: str = ""):
         return templates.TemplateResponse("index.html", {
             "request": request,
             "categories": filtered_categories,
-            "search_mode": True
+            "search_mode": True,
+            "query": q  # Pass the original query back to the template
         })
 
     return templates.TemplateResponse("index.html", {
         "request": request,
         "categories": songs_data,
-        "search_mode": False
+        "search_mode": False,
+        "query": ""
     })
 
 # Song detail page
@@ -68,7 +75,22 @@ async def category_page(request: Request, category: str):
 
     return templates.TemplateResponse("404.html", {"request": request}, status_code=404)
 
-# About page route
+# About page
 @app.get("/about", response_class=HTMLResponse)
 async def read_about(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
+
+@app.get("/warmups", response_class=HTMLResponse)
+async def warmups_page(request: Request):
+    warmups = [
+        {
+  "title": "Vocal Warmup 1",
+  "youtube": "https://www.youtube.com/embed/z_EYyWesCKQ"
+},
+{
+  "title": "Vocal Warmup 2",
+  "youtube": "https://www.youtube.com/embed/N50kF0FE3hM"
+}
+
+    ]
+    return templates.TemplateResponse("warmups.html", {"request": request, "warmups": warmups})
